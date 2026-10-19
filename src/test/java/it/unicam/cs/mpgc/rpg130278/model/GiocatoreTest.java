@@ -27,4 +27,56 @@ public class GiocatoreTest {
     void getSpadaRestituisceLaSpadaDelCostruttore(){
         assertSame(spada, giocatore.getSpada());
     }
+
+    @Test
+    void dannoDi30LasciaPuntiVita70(){
+        giocatore.subisciDanno(30);
+        assertEquals(70, giocatore.getPuntiVita());
+    }
+
+    @Test
+    void dannoNegativoLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> giocatore.subisciDanno(-10));
+    }
+
+    @Test
+    void dannoZeroLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> giocatore.subisciDanno(0));
+    }
+
+    @Test
+    void dannoUgualeAiPuntiVitaPortaAZero(){
+        giocatore.subisciDanno(100);
+        assertEquals(0, giocatore.getPuntiVita());
+    }
+
+
+    @Test
+    void dannoMaggioreDeiPuntiVitaNonScendeSottoZero(){
+        giocatore.subisciDanno(150);
+        assertEquals(0, giocatore.getPuntiVita());
+    }
+
+    @Test
+    void giocatoreAppenaCreatoNonEMorto(){
+        assertFalse(giocatore.isMorto());
+    }
+
+    @Test
+    void giocatoreSenzaPuntiVitaEMorto(){
+        giocatore.subisciDanno(100);
+        assertTrue(giocatore.isMorto());
+    }
+
+    @Test
+    void equipaggiaSpadaValidaSostituisceVecchiaSpada() {
+        Spada nuovaSpada = new Spada(25);
+        giocatore.equipaggiaSpada(nuovaSpada);
+        assertSame(nuovaSpada, giocatore.getSpada());
+    }
+
+    @Test
+    void equipaggiaSpadaNullaLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> giocatore.equipaggiaSpada(null));
+    }
 }
