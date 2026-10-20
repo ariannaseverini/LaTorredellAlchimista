@@ -1,6 +1,10 @@
-package it.unicam.cs.mpgc.rpg130278.model;
+package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
-public class EventoForziere implements Evento{
+import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
+import it.unicam.cs.mpgc.rpg130278.model.RisultatoEvento;
+import it.unicam.cs.mpgc.rpg130278.model.Spada;
+
+public class EventoForziere implements Evento {
     private final Spada nuovaSpada;
 
     public EventoForziere(Spada nuovaSpada){

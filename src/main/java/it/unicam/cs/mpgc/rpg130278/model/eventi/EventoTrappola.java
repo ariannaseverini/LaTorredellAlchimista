@@ -1,6 +1,9 @@
-package it.unicam.cs.mpgc.rpg130278.model;
+package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
-public class EventoTrappola implements Evento{
+import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
+import it.unicam.cs.mpgc.rpg130278.model.RisultatoEvento;
+
+public class EventoTrappola implements Evento {
     private final int danno;
 
     public EventoTrappola(int danno){

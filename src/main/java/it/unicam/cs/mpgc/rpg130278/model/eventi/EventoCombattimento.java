@@ -1,6 +1,11 @@
-package it.unicam.cs.mpgc.rpg130278.model;
+package it.unicam.cs.mpgc.rpg130278.model.eventi;
+
+import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
+import it.unicam.cs.mpgc.rpg130278.model.Mostro;
+import it.unicam.cs.mpgc.rpg130278.model.RisultatoEvento;
+
 //evento: combattimento contro un mostro
-public class EventoCombattimento implements Evento{
+public class EventoCombattimento implements Evento {
     private final Mostro mostro;
     public EventoCombattimento(Mostro mostro){
         if(mostro == null) throw new IllegalArgumentException();

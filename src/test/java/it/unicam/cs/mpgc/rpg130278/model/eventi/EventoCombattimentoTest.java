@@ -1,5 +1,9 @@
-package it.unicam.cs.mpgc.rpg130278.model;
+package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
+import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
+import it.unicam.cs.mpgc.rpg130278.model.Mostro;
+import it.unicam.cs.mpgc.rpg130278.model.RisultatoEvento;
+import it.unicam.cs.mpgc.rpg130278.model.Spada;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
