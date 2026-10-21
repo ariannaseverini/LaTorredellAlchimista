@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130278.model;
+package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
 public record RisultatoEvento(boolean successo, String messaggio) {
     public RisultatoEvento {

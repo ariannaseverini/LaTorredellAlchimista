@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130278.model;
 
 import it.unicam.cs.mpgc.rpg130278.model.eventi.Evento;
+import it.unicam.cs.mpgc.rpg130278.model.eventi.RisultatoEvento;
 
 public class Porta {
     private final Evento evento;

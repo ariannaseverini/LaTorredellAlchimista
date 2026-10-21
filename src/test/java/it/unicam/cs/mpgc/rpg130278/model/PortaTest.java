@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130278.model;
 
 import it.unicam.cs.mpgc.rpg130278.model.eventi.Evento;
 import it.unicam.cs.mpgc.rpg130278.model.eventi.EventoTrappola;
+import it.unicam.cs.mpgc.rpg130278.model.eventi.RisultatoEvento;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

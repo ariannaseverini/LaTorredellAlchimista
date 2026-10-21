@@ -87,3 +87,37 @@ Sotto-package `model`: logica del gioco, senza nessuna dipendenza dalla grafica.
 - Restituisce sempre `RisultatoEvento` con `successo = true` descrivendo l'azione avvenuta.
 
 **Test:** equipaggiamento nuova spada se migliore, mantenimento spada attuale se la nuova è peggiore o pari, parametri `null`.
+
+## Porta (model)
+
+**Responsabilità:** rappresenta una scelta presente all'interno di un piano della torre. Incapsula un `Evento` e ne delega l'esecuzione al momento dell'apertura.
+
+**Scelte:**
+Il costruttore richiede l'oggetto `Evento` e rifiuta parametri `null` con `IllegalArgumentException`.
+
+- `apri(Giocatore)` riceve il giocatore che interagisce con la porta e delega l'esecuzione tramite `evento.esegui(giocatore)`. Rifiuta valori null con `IllegalArgumentException`.
+
+- `getEvento()` consente di ispezionare l'evento contenuto.
+
+**Test:** creazione con evento valido e `null`, apertura della porta con giocatore valido e `null`, verifica dell'esito restituito dalla delegazione.
+
+## PianoDellaTorre (model)
+
+**Responsabilità:** rappresenta un singolo livello della torre. Gestisce esattamente tre porte fisse e la generazione casuale o custom dei loro contenuti.
+
+**Scelte:**
+
+Dimensione fissa: definita tramite la costante `NUMERO_PORTE = 3`.
+
+Delegazione tra costruttori (Constructor Chaining): il costruttore standard `PianoDellaTorre(int)` genera casualmente 3 porte bilanciando la difficoltà in base al numero del piano, richiamando il costruttore custom a due parametri `this(numeroPiano, generaPorteCasuali(...))`.
+
+Il costruttore a due parametri `PianoDellaTorre(int, Porta[])` permette di passare un array di porte predefinite per consentire test unitari deterministici (TDD).
+
+Validazione stringente: rifiuta `numeroPiano <= 0`, array `porte` nullo, lunghezza dell'array diversa da 3 (`porte.length != NUMERO_PORTE`) e singoli elementi dell'array nulli con `IllegalArgumentException`.
+
+Protezione dello stato (Copia Difensiva): sia il costruttore che il metodo `getPorte()` utilizzano `.clone()` sull'array di porte per evitare mutazioni esterne indesiderate.
+
+- `getPorta(int)` restituisce una singola porta controllando che l'indice rientri tra `0` e `NUMERO_PORTE - 1`.
+
+**Test:** creazione piano standard a 3 porte, creazione piano custom per TDD, numero piano <= 0, array porte `null`, array di lunghezza errata (< 3 o > 3), array con elementi `null`, accesso a porta con indice non valido, verifica dell'immutabilità tramite copia difensiva `.clone()`.
+
