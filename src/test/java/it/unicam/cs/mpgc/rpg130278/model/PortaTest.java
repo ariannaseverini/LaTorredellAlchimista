@@ -11,14 +11,15 @@ class PortaTest {
     @Test
     void apriPortaEsegueEvento() {
         Giocatore giocatore = new Giocatore(new Spada(10));
-        Evento trappola = new EventoTrappola(20);
+        Evento trappola = new EventoTrappola(2);
         Porta porta = new Porta(trappola);
 
         RisultatoEvento risultato = porta.apri(giocatore);
 
         assertTrue(risultato.successo());
-        assertEquals(80, giocatore.getPuntiVita());
-        assertEquals(trappola, porta.getEvento());
+        assertEquals(2, risultato.pianiIndietro());
+        assertEquals(100, giocatore.getPuntiVita());
+        assertSame(trappola, porta.getEvento());
     }
 
     @Test

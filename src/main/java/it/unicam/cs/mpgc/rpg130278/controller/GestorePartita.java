@@ -7,9 +7,11 @@ import it.unicam.cs.mpgc.rpg130278.model.eventi.RisultatoEvento;
 
 public class GestorePartita {
 
+    public static final int NUMERO_PIANI = 10;
+
     private final Giocatore giocatore;
     private PianoDellaTorre pianoAttuale;
-    private boolean gameOver;
+    private StatoPartita stato;
 
     public GestorePartita(Giocatore giocatore) {
         if (giocatore == null) {
@@ -17,7 +19,7 @@ public class GestorePartita {
         }
         this.giocatore = giocatore;
         this.pianoAttuale = new PianoDellaTorre(1);
-        this.gameOver = false;
+        this.stato = StatoPartita.IN_CORSO;
     }
 
     public Giocatore getGiocatore() {
@@ -35,8 +37,12 @@ public class GestorePartita {
         this.pianoAttuale = pianoAttuale;
     }
 
+    public StatoPartita getStato() {
+        return stato;
+    }
+
     public boolean isGameOver() {
-        return gameOver || giocatore.isMorto();
+        return stato != StatoPartita.IN_CORSO;
     }
 
     public RisultatoEvento scegliPorta(int indicePorta) {
@@ -48,10 +54,16 @@ public class GestorePartita {
         RisultatoEvento risultato = portaScelta.apri(giocatore);
 
         if (giocatore.isMorto()) {
-            this.gameOver = true;
+            this.stato = StatoPartita.SCONFITTA;
+        } else if (risultato.pianiIndietro() > 0) {
+            int nuovoPiano = Math.max(1, pianoAttuale.getNumeroPiano() - risultato.pianiIndietro());
+            this.pianoAttuale = new PianoDellaTorre(nuovoPiano);
         } else if (risultato.successo()) {
-            // Avanza al piano successivo
-            this.pianoAttuale = new PianoDellaTorre(pianoAttuale.getNumeroPiano() + 1);
+            if (pianoAttuale.getNumeroPiano() >= NUMERO_PIANI) {
+                this.stato = StatoPartita.VITTORIA;
+            } else {
+                this.pianoAttuale = new PianoDellaTorre(pianoAttuale.getNumeroPiano() + 1);
+            }
         }
 
         return risultato;

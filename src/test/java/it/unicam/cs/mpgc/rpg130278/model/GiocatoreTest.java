@@ -79,4 +79,6 @@ public class GiocatoreTest {
     void equipaggiaSpadaNullaLanciaEccezione() {
         assertThrows(IllegalArgumentException.class, () -> giocatore.equipaggiaSpada(null));
     }
+
+
 }

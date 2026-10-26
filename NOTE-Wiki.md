@@ -121,3 +121,14 @@ Protezione dello stato (Copia Difensiva): sia il costruttore che il metodo `getP
 
 **Test:** creazione piano standard a 3 porte, creazione piano custom per TDD, numero piano <= 0, array porte `null`, array di lunghezza errata (< 3 o > 3), array con elementi `null`, accesso a porta con indice non valido, verifica dell'immutabilità tramite copia difensiva `.clone()`.
 
+## GestorePartita (controller)
+
+**Resposabilità:** coordina il flusso di gioco, gestisce l'interazione con le porte di ciascun piano, fa avanzare il giocatore ai piani successivi in caso di successo e controlla lo stato di Game Over.
+
+**Scelte:**
+
+- Separazione delle responsabilità (MVC): collocato nel sotto-package `controller` per disaccoppiare la logica di avanzamento sia dal modello del dominio (`model`) sia dall'interfaccia utente (CLI/GUI).
+
+- Validazione input: il costruttore richiede l'oggetto Giocatore e rifiuta valori null con IllegalArgumentException.
+
+-Inizializzazione: all'avvio della partita crea automaticamente il primo piano della torre (`PianoDellaTorre` al piano 1) e imposta lo stato di `gameOver` a `false`.

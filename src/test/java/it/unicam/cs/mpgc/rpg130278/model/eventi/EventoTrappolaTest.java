@@ -2,39 +2,52 @@ package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
 import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
 import it.unicam.cs.mpgc.rpg130278.model.Spada;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EventoTrappolaTest {
 
-    @Test
-    void trappolaRiducePuntiVitaGiocatore() {
-        Giocatore giocatore = new Giocatore(new Spada(10));
-        EventoTrappola trappola = new EventoTrappola(30);
+    private Giocatore giocatore;
 
-        RisultatoEvento risultato = trappola.esegui(giocatore);
+    @BeforeEach
+    void setUp() {
+        giocatore = new Giocatore(new Spada(10));
+    }
+
+    @Test
+    void pianiDaScendereValidiVengonoMemorizzati() {
+        assertEquals(2, new EventoTrappola(2).getPianiDaScendere());
+    }
+
+    @Test
+    void pianiDaScendereZeroLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(0));
+    }
+
+    @Test
+    void pianiDaScendereNegativiLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(-1));
+    }
+
+    @Test
+    void eseguiRestituisceRisultatoConIPianiDaScendere() {
+        RisultatoEvento risultato = new EventoTrappola(2).esegui(giocatore);
 
         assertTrue(risultato.successo());
-        assertEquals(70, giocatore.getPuntiVita());
+        assertEquals(2, risultato.pianiIndietro());
     }
 
     @Test
-    void trappolaUccideGiocatore() {
-        Giocatore giocatore = new Giocatore(new Spada(10));
-        EventoTrappola trappolaMortale = new EventoTrappola(100);
+    void eseguiNonToglieIPuntiVitaAlGiocatore() {
+        new EventoTrappola(3).esegui(giocatore);
 
-        RisultatoEvento risultato = trappolaMortale.esegui(giocatore);
-
-        assertFalse(risultato.successo());
-        assertTrue(giocatore.isMorto());
+        assertEquals(100, giocatore.getPuntiVita());
     }
 
     @Test
-    void validazioneInputNonValidi() {
-        assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(0));
-        assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(-10));
-
-        EventoTrappola trappola = new EventoTrappola(20);
-        assertThrows(IllegalArgumentException.class, () -> trappola.esegui(null));
+    void eseguiConGiocatoreNulloLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(1).esegui(null));
     }
 }

@@ -1,5 +1,6 @@
 plugins {
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 java {
@@ -8,8 +9,13 @@ java {
     }
 }
 
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls' ]
+}
+
 application {
-    mainClass = 'it.unicam.cs.mpgc.rpg<matricola>.Main'
+    mainClass = 'it.unicam.cs.mpgc.rpg130278.view.MainFX'
 }
 
 repositories {
