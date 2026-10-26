@@ -23,7 +23,7 @@ class PianoDellaTorreTest {
     @Test
     void creazionePianoConPorteCustom() {
         Porta p0 = new Porta(new EventoTrappola(10));
-        Porta p1 = new Porta(new EventoForziere(new Spada(20)));
+        Porta p1 = new Porta(new EventoForziere(5));
         Porta p2 = new Porta(new EventoCombattimento(new Mostro("Goblin", 30, 10)));
 
         Porta[] porteCustom = new Porta[]{p0, p1, p2};

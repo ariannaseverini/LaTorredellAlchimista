@@ -41,7 +41,7 @@ class GestorePartitaTest {
 
     @Test
     void eventoInnocuoFaAvanzareDiPianoEPartitaResteInCorso() {
-        gestore.setPianoAttuale(pianoConTrePorteUguali(1, new EventoForziere(new Spada(15))));
+        gestore.setPianoAttuale(pianoConTrePorteUguali(1, new EventoForziere(5)));
 
         RisultatoEvento risultato = gestore.scegliPorta(0);
 
@@ -93,7 +93,7 @@ class GestorePartitaTest {
     @Test
     void superareIlPianoDieciDaLaVittoriaESenzaPianoSuccessivo() {
         gestore.setPianoAttuale(pianoConTrePorteUguali(
-                GestorePartita.NUMERO_PIANI, new EventoForziere(new Spada(15))));
+                GestorePartita.NUMERO_PIANI, new EventoForziere(5)));
 
         RisultatoEvento risultato = gestore.scegliPorta(0);
 

@@ -52,10 +52,9 @@ public class PianoDellaTorre {
         return switch (tipo) {
             case 0 -> new EventoCombattimento(generaMostroCasuale(random, numeroPiano));
             case 1 -> new EventoTrappola(1 + random.nextInt(3)); // scende di 1-3 piani
-            case 2 -> new EventoForziere(new Spada(15 + random.nextInt(10))); // Spada da 15 a 24
+            case 2 -> new EventoForziere(3 + random.nextInt(6)); // bonus alla spada da 3 a 8
             default -> throw new IllegalStateException("Tipo di evento non valido");
         };
-
     }
 
     private static Mostro generaMostroCasuale(Random random, int numeroPiano) {

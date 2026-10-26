@@ -4,30 +4,28 @@ import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
 import it.unicam.cs.mpgc.rpg130278.model.Spada;
 
 public class EventoForziere implements Evento {
-    private final Spada nuovaSpada;
+    private final int bonusDanno;
 
-    public EventoForziere(Spada nuovaSpada){
-        if(nuovaSpada == null) throw new IllegalArgumentException();
-        this.nuovaSpada = nuovaSpada;
+    public EventoForziere(int bonusDanno) {
+        if (bonusDanno <= 0) {
+            throw new IllegalArgumentException("Il bonus al danno deve essere maggiore di 0");
+        }
+        this.bonusDanno = bonusDanno;
     }
 
-    public Spada getNuovaSpada() {
-        return nuovaSpada;
+    public int getBonusDanno() {
+        return bonusDanno;
     }
 
     @Override
-    public RisultatoEvento esegui(Giocatore giocatore){
-        if(giocatore == null) throw new IllegalArgumentException();
-
-        int dannoAttuale = giocatore.getSpada().getDanno();
-
-        if (nuovaSpada.getDanno() > dannoAttuale) {
-            giocatore.equipaggiaSpada(nuovaSpada);
-            return new RisultatoEvento(true, "Hai aperto un forziere e equipaggiato una spada migliore con danno " + nuovaSpada.getDanno() + "!");
-        } else {
-            return new RisultatoEvento(true, "Hai aperto un forziere con una spada da " + nuovaSpada.getDanno() + " danni, ma la tua attuale (" + dannoAttuale + ") è migliore. L'hai lasciata lì.");
+    public RisultatoEvento esegui(Giocatore giocatore) {
+        if (giocatore == null) {
+            throw new IllegalArgumentException("Il giocatore non può essere null.");
         }
+        int nuovoDanno = giocatore.getSpada().getDanno() + bonusDanno;
+        giocatore.equipaggiaSpada(new Spada(nuovoDanno));
+        return new RisultatoEvento(true,
+                "Hai aperto un forziere: la tua spada migliora di " + bonusDanno
+                        + "! Ora infligge " + nuovoDanno + " danni.");
     }
-
 }
-
