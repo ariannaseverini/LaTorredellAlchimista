@@ -15,7 +15,7 @@ javafx {
 }
 
 application {
-    mainClass = 'it.unicam.cs.mpgc.rpg130278.view.MainFX'
+    mainClass = 'it.unicam.cs.mpgc.rpg130278.Main'
 }
 
 repositories {
@@ -30,4 +30,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+run {
+    standardInput = System.in
 }
