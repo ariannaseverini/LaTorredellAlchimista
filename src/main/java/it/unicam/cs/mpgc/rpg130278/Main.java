@@ -6,7 +6,9 @@ import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
 import it.unicam.cs.mpgc.rpg130278.model.PianoDellaTorre;
 import it.unicam.cs.mpgc.rpg130278.model.Spada;
 import it.unicam.cs.mpgc.rpg130278.model.eventi.RisultatoEvento;
-
+import it.unicam.cs.mpgc.rpg130278.model.Azione;
+import it.unicam.cs.mpgc.rpg130278.model.Combattimento;
+import it.unicam.cs.mpgc.rpg130278.model.Mostro;
 import java.util.Scanner;
 
 public class Main {
@@ -34,19 +36,56 @@ public class Main {
         System.out.println("\nSei armato con una spada da " + DANNO_SPADA_INIZIALE + " danni. Buona fortuna!\n");
 
         while (!gestore.isGameOver()) {
-            stampaSituazione(gestore);
-            int indicePorta = leggiPorta(scanner);
-
-            RisultatoEvento risultato = gestore.scegliPorta(indicePorta);
-            System.out.println("\n" + risultato.messaggio());
-
-            if (!gestore.isGameOver()) {
-                System.out.println("\nSali al piano successivo...\n");
+            if (gestore.getStato() == StatoPartita.IN_COMBATTIMENTO) {
+                turnoDiCombattimento(gestore, scanner);
+            } else {
+                turnoDiEsplorazione(gestore, scanner);
             }
         }
         stampaFinale(gestore);
     }
 
+    private static void turnoDiEsplorazione(GestorePartita gestore, Scanner scanner) {
+        stampaSituazione(gestore);
+        int indicePorta = leggiPorta(scanner);
+        RisultatoEvento risultato = gestore.scegliPorta(indicePorta);
+        System.out.println("\n" + risultato.messaggio() + "\n");
+    }
+
+    private static void turnoDiCombattimento(GestorePartita gestore, Scanner scanner) {
+        Combattimento combattimento = gestore.getCombattimentoInCorso();
+        Giocatore giocatore = gestore.getGiocatore();
+        Mostro mostro = combattimento.getMostro();
+
+        System.out.println(LINEA);
+        System.out.println("COMBATTIMENTO contro " + mostro.getNome());
+        System.out.println("I tuoi HP: " + giocatore.getPuntiVita()
+                + " | HP " + mostro.getNome() + ": " + mostro.getPuntiVita());
+        if (combattimento.isAttaccoPotenziato()) {
+            System.out.println("Il tuo prossimo attacco farà il doppio dei danni!");
+        }
+
+        Azione azione = leggiAzione(scanner);
+        System.out.println("\n" + gestore.eseguiTurno(azione) + "\n");
+
+        if (combattimento.isVinto()) {
+            System.out.println("Hai sconfitto " + mostro.getNome() + "!");
+            if (!gestore.isGameOver()) {
+                System.out.println("Sali al piano successivo...\n");
+            }
+        }
+    }
+
+    private static Azione leggiAzione(Scanner scanner) {
+        while (true) {
+            System.out.print("Cosa fai? [A] attacca  [D] difendi: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            if (input.equals("a")) return Azione.ATTACCA;
+            if (input.equals("d")) return Azione.DIFENDI;
+            System.out.println("Comando non valido: scrivi A oppure D.");
+        }
+    }
     private static void stampaBenvenuto() {
         System.out.println(SEPARATORE);
         System.out.println("     BENVENUTO NELLA TORRE DELL'ALCHIMISTA");

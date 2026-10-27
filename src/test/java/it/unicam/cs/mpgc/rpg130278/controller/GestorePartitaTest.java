@@ -25,9 +25,14 @@ class GestorePartitaTest {
         return new PianoDellaTorre(numeroPiano, porte);
     }
 
-    // Un mostro che il giocatore non può battere per far morire il giocatore nei test
+    // Un mostro che il giocatore non può battere: fa morire il giocatore al primo turno
     private Evento mostroInvincibile() {
         return new EventoCombattimento(new Mostro("Drago", 1000, 500));
+    }
+
+    // Un mostro che la spada iniziale (danno 10) sconfigge con un solo attacco
+    private Evento mostroDebole() {
+        return new EventoCombattimento(new Mostro("Topo", 5, 1));
     }
 
     @Test
@@ -79,44 +84,91 @@ class GestorePartitaTest {
     }
 
     @Test
-    void morireControUnMostroTerminaLaPartitaConSconfitta() {
-        gestore.setPianoAttuale(pianoConTrePorteUguali(1, mostroInvincibile()));
+    void aprirePortaConMostroAvviaIlCombattimentoSenzaCambiarePiano() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(3, mostroDebole()));
 
-        RisultatoEvento risultato = gestore.scegliPorta(0);
+        gestore.scegliPorta(0);
 
-        assertFalse(risultato.successo());
-        assertTrue(giocatore.isMorto());
-        assertTrue(gestore.isGameOver());
-        assertEquals(StatoPartita.SCONFITTA, gestore.getStato());
+        assertEquals(StatoPartita.IN_COMBATTIMENTO, gestore.getStato());
+        assertNotNull(gestore.getCombattimentoInCorso());
+        assertEquals(3, gestore.getPianoAttuale().getNumeroPiano());
+        assertFalse(gestore.isGameOver());
     }
 
     @Test
-    void superareIlPianoDieciDaLaVittoriaESenzaPianoSuccessivo() {
+    void scegliPortaDuranteIlCombattimentoLanciaEccezione() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(3, mostroDebole()));
+        gestore.scegliPorta(0);
+
+        assertThrows(IllegalStateException.class, () -> gestore.scegliPorta(1));
+    }
+
+    @Test
+    void eseguireUnTurnoSenzaCombattimentoLanciaEccezione() {
+        assertThrows(IllegalStateException.class, () -> gestore.eseguiTurno(Azione.ATTACCA));
+    }
+
+    @Test
+    void difendersiNonTerminaLoScontro() {
         gestore.setPianoAttuale(pianoConTrePorteUguali(
-                GestorePartita.NUMERO_PIANI, new EventoForziere(5)));
+                3, new EventoCombattimento(new Mostro("Goblin", 1000, 4))));
+        gestore.scegliPorta(0);
 
-        RisultatoEvento risultato = gestore.scegliPorta(0);
+        gestore.eseguiTurno(Azione.DIFENDI);
 
-        assertTrue(risultato.successo());
+        assertEquals(StatoPartita.IN_COMBATTIMENTO, gestore.getStato());
+        assertNotNull(gestore.getCombattimentoInCorso());
+    }
+
+    @Test
+    void vincereLoScontroRiportaInCorsoEAvanzaDiPiano() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(3, mostroDebole()));
+        gestore.scegliPorta(0);
+
+        gestore.eseguiTurno(Azione.ATTACCA);
+
+        assertEquals(StatoPartita.IN_CORSO, gestore.getStato());
+        assertEquals(4, gestore.getPianoAttuale().getNumeroPiano());
+        assertNull(gestore.getCombattimentoInCorso());
+    }
+
+    @Test
+    void vincereLoScontroAlPianoDieciDaLaVittoria() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(GestorePartita.NUMERO_PIANI, mostroDebole()));
+        gestore.scegliPorta(0);
+
+        gestore.eseguiTurno(Azione.ATTACCA);
+
         assertEquals(StatoPartita.VITTORIA, gestore.getStato());
         assertTrue(gestore.isGameOver());
         assertEquals(GestorePartita.NUMERO_PIANI, gestore.getPianoAttuale().getNumeroPiano());
     }
 
     @Test
-    void morireAlPianoDieciNonDaLaVittoria() {
-        gestore.setPianoAttuale(pianoConTrePorteUguali(
-                GestorePartita.NUMERO_PIANI, mostroInvincibile()));
-
+    void perdereLoScontroTerminaLaPartitaConSconfitta() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(1, mostroInvincibile()));
         gestore.scegliPorta(0);
+
+        gestore.eseguiTurno(Azione.ATTACCA);
+
+        assertTrue(giocatore.isMorto());
+        assertEquals(StatoPartita.SCONFITTA, gestore.getStato());
+        assertTrue(gestore.isGameOver());
+    }
+
+    @Test
+    void morireAlPianoDieciNonDaLaVittoria() {
+        gestore.setPianoAttuale(pianoConTrePorteUguali(GestorePartita.NUMERO_PIANI, mostroInvincibile()));
+        gestore.scegliPorta(0);
+
+        gestore.eseguiTurno(Azione.ATTACCA);
 
         assertEquals(StatoPartita.SCONFITTA, gestore.getStato());
     }
 
     @Test
     void trappolaAlPianoDieciNonDaLaVittoria() {
-        gestore.setPianoAttuale(pianoConTrePorteUguali(
-                GestorePartita.NUMERO_PIANI, new EventoTrappola(1)));
+        gestore.setPianoAttuale(pianoConTrePorteUguali(GestorePartita.NUMERO_PIANI, new EventoTrappola(1)));
 
         gestore.scegliPorta(0);
 
@@ -128,6 +180,7 @@ class GestorePartitaTest {
     void scegliPortaAPartitaFinitaLanciaEccezione() {
         gestore.setPianoAttuale(pianoConTrePorteUguali(1, mostroInvincibile()));
         gestore.scegliPorta(0);
+        gestore.eseguiTurno(Azione.ATTACCA);
 
         assertThrows(IllegalStateException.class, () -> gestore.scegliPorta(0));
     }

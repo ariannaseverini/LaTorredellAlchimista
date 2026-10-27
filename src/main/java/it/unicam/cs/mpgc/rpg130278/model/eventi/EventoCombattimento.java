@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg130278.model.eventi;
 
 import it.unicam.cs.mpgc.rpg130278.model.Giocatore;
+import it.unicam.cs.mpgc.rpg130278.model.Combattimento;
+
 import it.unicam.cs.mpgc.rpg130278.model.Mostro;
 
 public class EventoCombattimento implements Evento {
@@ -16,6 +18,13 @@ public class EventoCombattimento implements Evento {
 
     public Mostro getMostro() {
         return mostro;
+    }
+
+    public Combattimento avvia(Giocatore giocatore) {
+        if (giocatore == null) {
+            throw new IllegalArgumentException("Il giocatore non può essere null.");
+        }
+        return new Combattimento(giocatore, mostro);
     }
 
     @Override
@@ -62,4 +71,5 @@ public class EventoCombattimento implements Evento {
 
         return new RisultatoEvento(vittoria, logCombattimento.toString());
     }
+
 }
