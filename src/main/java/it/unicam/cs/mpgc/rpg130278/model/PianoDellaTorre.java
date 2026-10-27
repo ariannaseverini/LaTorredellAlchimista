@@ -51,7 +51,7 @@ public class PianoDellaTorre {
         int tipo = random.nextInt(3);
         return switch (tipo) {
             case 0 -> new EventoCombattimento(generaMostroCasuale(random, numeroPiano));
-            case 1 -> new EventoTrappola(1 + random.nextInt(3)); // scende di 1-3 piani
+            case 1 -> new EventoTrappola(1); // scende di 1 piano
             case 2 -> new EventoForziere(3 + random.nextInt(6)); // bonus alla spada da 3 a 8
             default -> throw new IllegalStateException("Tipo di evento non valido");
         };
@@ -62,9 +62,8 @@ public class PianoDellaTorre {
         String nome = nomiMostri[random.nextInt(nomiMostri.length)];
 
         //man mano che il numero di piano sale i mostri diventano piu forti e cambiano ad ogni generazione
-        int puntiVita = 20 + (numeroPiano * 5) + random.nextInt(10);
-        int danno = 5 + (numeroPiano * 2) + random.nextInt(5);
-
+        int puntiVita = 20 + (numeroPiano * 4) + random.nextInt(8);
+        int danno = 3 + numeroPiano + random.nextInt(4);
         return new Mostro(nome, puntiVita, danno);
     }
 }
