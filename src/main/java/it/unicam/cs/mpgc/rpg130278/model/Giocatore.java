@@ -6,9 +6,16 @@ public class Giocatore {
     private Spada spada;
 
     public Giocatore(Spada spada) {
+        this(spada, MAX_PUNTI_VITA);
+    }
+
+    public Giocatore(Spada spada, int puntiVita) {
         if (spada == null) throw new IllegalArgumentException("La spada è obbligatoria");
+        if (puntiVita <= 0 || puntiVita > MAX_PUNTI_VITA) {
+            throw new IllegalArgumentException("I punti vita devono essere tra 1 e " + MAX_PUNTI_VITA);
+        }
         this.spada = spada;
-        this.puntiVita = MAX_PUNTI_VITA;
+        this.puntiVita = puntiVita;
     }
 
     public int getPuntiVita() {

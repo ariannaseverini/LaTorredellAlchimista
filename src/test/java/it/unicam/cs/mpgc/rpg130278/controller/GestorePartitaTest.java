@@ -195,4 +195,57 @@ class GestorePartitaTest {
         assertThrows(IllegalArgumentException.class, () -> gestore.scegliPorta(-1));
         assertThrows(IllegalArgumentException.class, () -> gestore.scegliPorta(3));
     }
+
+    @Test
+    void costruttoreConPianoIndicatoPartedaQuelPiano() {
+        GestorePartita ripreso = new GestorePartita(giocatore, 5);
+
+        assertSame(giocatore, ripreso.getGiocatore());
+        assertEquals(5, ripreso.getPianoAttuale().getNumeroPiano());
+        assertEquals(StatoPartita.IN_CORSO, ripreso.getStato());
+    }
+
+    @Test
+    void costruttoreConPianoZeroLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new GestorePartita(giocatore, 0));
+    }
+
+    @Test
+    void costruttoreConPianoNegativoLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new GestorePartita(giocatore, -2));
+    }
+
+    @Test
+    void costruttoreConPianoOltreLUltimoLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new GestorePartita(giocatore, GestorePartita.NUMERO_PIANI + 1));
+    }
+
+    @Test
+    void costruttoreAccettaIlPrimoPiano() {
+        assertEquals(1, new GestorePartita(giocatore, 1).getPianoAttuale().getNumeroPiano());
+    }
+
+    @Test
+    void costruttoreAccettaLUltimoPiano() {
+        GestorePartita ripreso = new GestorePartita(giocatore, GestorePartita.NUMERO_PIANI);
+
+        assertEquals(GestorePartita.NUMERO_PIANI, ripreso.getPianoAttuale().getNumeroPiano());
+    }
+
+    @Test
+    void costruttoreConGiocatoreNulloELPianoLanciaEccezione() {
+        assertThrows(IllegalArgumentException.class, () -> new GestorePartita(null, 3));
+    }
+
+    @Test
+    void riprendereAllUltimoPianoEVincereDaLaVittoria() {
+        GestorePartita ripreso = new GestorePartita(giocatore, GestorePartita.NUMERO_PIANI);
+        ripreso.setPianoAttuale(pianoConTrePorteUguali(GestorePartita.NUMERO_PIANI, mostroDebole()));
+
+        ripreso.scegliPorta(0);
+        ripreso.eseguiTurno(Azione.ATTACCA);
+
+        assertEquals(StatoPartita.VITTORIA, ripreso.getStato());
+    }
 }

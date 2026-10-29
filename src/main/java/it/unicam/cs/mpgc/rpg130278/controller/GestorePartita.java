@@ -19,11 +19,18 @@ public class GestorePartita {
     private Combattimento combattimentoInCorso;
 
     public GestorePartita(Giocatore giocatore) {
+        this(giocatore, 1);
+    }
+
+    public GestorePartita(Giocatore giocatore, int numeroPiano) {
         if (giocatore == null) {
             throw new IllegalArgumentException("Il giocatore non può essere null.");
         }
+        if (numeroPiano < 1 || numeroPiano > NUMERO_PIANI) {
+            throw new IllegalArgumentException("Il piano deve essere tra 1 e " + NUMERO_PIANI);
+        }
         this.giocatore = giocatore;
-        this.pianoAttuale = new PianoDellaTorre(1);
+        this.pianoAttuale = new PianoDellaTorre(numeroPiano);
         this.stato = StatoPartita.IN_CORSO;
     }
 
