@@ -73,4 +73,14 @@ class PianoDellaTorreTest {
 
         assertSame(portaOriginale, piano.getPorta(0));
     }
+
+    @Test
+    void alPrimoPianoNonCiSonoTrappole() {
+        for (int giro = 0; giro < 200; giro++) {
+            PianoDellaTorre piano = new PianoDellaTorre(1);
+            for (Porta porta : piano.getPorte()) {
+                assertFalse(porta.getEvento() instanceof EventoTrappola);
+            }
+        }
+    }
 }
