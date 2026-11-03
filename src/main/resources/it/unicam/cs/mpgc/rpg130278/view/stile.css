@@ -1,0 +1,37 @@
+.radice {
+    -fx-background-color: #2b2233;
+    -fx-padding: 20;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.porta {
+    -fx-pref-width: 120;
+    -fx-pref-height: 160;
+    -fx-font-size: 16px;
+}
+
+.porta:disabled {
+    -fx-opacity: 0.4;
+}
+
+.torre {
+    -fx-padding: 0 20 0 0;
+}
+
+.piano {
+    -fx-background-color: #4a4560;
+    -fx-text-fill: white;
+    -fx-pref-width: 110;
+    -fx-pref-height: 40;
+    -fx-alignment: center;
+}
+
+.piano-attuale {
+    -fx-background-color: #f2c14e;
+    -fx-text-fill: #2b2233;
+    -fx-font-weight: bold;
+}

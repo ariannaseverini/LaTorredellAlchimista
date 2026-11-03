@@ -10,12 +10,11 @@ java {
 }
 
 javafx {
-    version = "21"
-    modules = [ 'javafx.controls' ]
-}
+    version = "25"
+    modules = ['javafx.controls', 'javafx.fxml']}
 
 application {
-    mainClass = 'it.unicam.cs.mpgc.rpg130278.Main'
+    mainClass = 'it.unicam.cs.mpgc.rpg130278.view.MainFX'
 }
 
 repositories {
