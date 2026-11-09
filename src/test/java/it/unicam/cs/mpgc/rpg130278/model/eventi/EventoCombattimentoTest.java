@@ -43,4 +43,13 @@ class EventoCombattimentoTest {
         EventoCombattimento evento = new EventoCombattimento(goblin);
         assertThrows(IllegalArgumentException.class, () -> evento.esegui(null));
     }
+    @Test
+    void risultatoHaTipoMostro() {
+        Giocatore giocatore = new Giocatore(new Spada(10));
+        Mostro mostro = new Mostro("Goblin", 1, 1);
+
+        RisultatoEvento risultato = new EventoCombattimento(mostro).esegui(giocatore);
+
+        assertEquals(TipoEvento.MOSTRO, risultato.tipo());
+    }
 }

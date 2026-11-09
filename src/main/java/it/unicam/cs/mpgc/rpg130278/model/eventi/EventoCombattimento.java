@@ -69,7 +69,6 @@ public class EventoCombattimento implements Evento {
             logCombattimento.append("ESITO: Sei stato sconfitto da ").append(mostro.getNome()).append("...");
         }
 
-        return new RisultatoEvento(vittoria, logCombattimento.toString());
-    }
+        return new RisultatoEvento(vittoria, logCombattimento.toString(), TipoEvento.MOSTRO);    }
 
 }

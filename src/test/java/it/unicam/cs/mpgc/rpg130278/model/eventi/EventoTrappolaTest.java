@@ -50,4 +50,13 @@ class EventoTrappolaTest {
     void eseguiConGiocatoreNulloLanciaEccezione() {
         assertThrows(IllegalArgumentException.class, () -> new EventoTrappola(1).esegui(null));
     }
+
+    @Test
+    void risultatoHaTipoTrappola() {
+        Giocatore giocatore = new Giocatore(new Spada(10));
+
+        RisultatoEvento risultato = new EventoTrappola(1).esegui(giocatore);
+
+        assertEquals(TipoEvento.TRAPPOLA, risultato.tipo());
+    }
 }

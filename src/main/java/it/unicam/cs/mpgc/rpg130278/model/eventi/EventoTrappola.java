@@ -23,6 +23,6 @@ public class EventoTrappola implements Evento {
         }
         return new RisultatoEvento(true,
                 "Sei caduto in una trappola e vieni spinto verso il basso di " + pianiDaScendere + " piani!",
-                pianiDaScendere);
+                pianiDaScendere, TipoEvento.TRAPPOLA);
     }
 }

@@ -26,6 +26,6 @@ public class EventoForziere implements Evento {
         giocatore.equipaggiaSpada(new Spada(nuovoDanno));
         return new RisultatoEvento(true,
                 "Hai aperto un forziere: la tua spada migliora di " + bonusDanno
-                        + "! Ora infligge " + nuovoDanno + " danni.");
+                        + "! Ora infligge " + nuovoDanno + " danni.", TipoEvento.FORZIERE);
     }
 }

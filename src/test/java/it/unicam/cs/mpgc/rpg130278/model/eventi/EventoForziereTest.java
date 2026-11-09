@@ -53,4 +53,13 @@ class EventoForziereTest {
     void eseguiConGiocatoreNulloLanciaEccezione() {
         assertThrows(IllegalArgumentException.class, () -> new EventoForziere(5).esegui(null));
     }
+
+    @Test
+    void risultatoHaTipoForziere() {
+        Giocatore giocatore = new Giocatore(new Spada(10));
+
+        RisultatoEvento risultato = new EventoForziere(5).esegui(giocatore);
+
+        assertEquals(TipoEvento.FORZIERE, risultato.tipo());
+    }
 }

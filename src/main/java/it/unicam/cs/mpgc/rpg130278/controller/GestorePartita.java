@@ -8,6 +8,7 @@ import it.unicam.cs.mpgc.rpg130278.model.PianoDellaTorre;
 import it.unicam.cs.mpgc.rpg130278.model.Porta;
 import it.unicam.cs.mpgc.rpg130278.model.eventi.EventoCombattimento;
 import it.unicam.cs.mpgc.rpg130278.model.eventi.RisultatoEvento;
+import it.unicam.cs.mpgc.rpg130278.model.eventi.TipoEvento;
 
 public class GestorePartita {
 
@@ -75,8 +76,7 @@ public class GestorePartita {
             combattimentoInCorso = evento.avvia(giocatore);
             stato = StatoPartita.IN_COMBATTIMENTO;
             Mostro mostro = evento.getMostro();
-            return new RisultatoEvento(true, "Un mostro ti sbarra la strada: " + mostro.getNome()
-                    + " (HP " + mostro.getPuntiVita() + ", danno " + mostro.getDanno() + ").");
+            return new RisultatoEvento(true, "Un mostro ti sbarra la strada: " + mostro.getNome(), TipoEvento.MOSTRO);
         }
 
         RisultatoEvento risultato = portaScelta.apri(giocatore);
