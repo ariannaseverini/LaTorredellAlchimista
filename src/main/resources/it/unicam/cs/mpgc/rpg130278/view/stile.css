@@ -19,19 +19,31 @@
 }
 
 .torre {
-    -fx-padding: 0 20 0 0;
+    -fx-padding: 10;
+    -fx-background-color: #2b2233;
+    -fx-border-color: #8a7f99;
+    -fx-border-width: 3;
 }
 
 .piano {
     -fx-background-color: #4a4560;
-    -fx-text-fill: white;
-    -fx-pref-width: 110;
-    -fx-pref-height: 40;
-    -fx-alignment: center;
+    -fx-pref-width: 150;
+    -fx-pref-height: 44;
+    -fx-alignment: center-left;
+    -fx-padding: 0 10 0 10;
 }
 
 .piano-attuale {
     -fx-background-color: #f2c14e;
+}
+
+.piano-attuale .label {
     -fx-text-fill: #2b2233;
     -fx-font-weight: bold;
+}
+
+.personaggio {
+    -fx-fill: #e8505b;
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
 }

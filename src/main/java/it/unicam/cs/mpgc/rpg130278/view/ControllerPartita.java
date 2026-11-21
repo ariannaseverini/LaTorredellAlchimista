@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 
 public class ControllerPartita {
 
@@ -32,12 +33,16 @@ public class ControllerPartita {
     private VBox torre;
 
     private GestorePartita gestore;
+    private Circle personaggio;
 
     public void initialize() {
         gestore = new GestorePartita(new Giocatore(new Spada(DANNO_SPADA_INIZIALE)));
+        personaggio = new Circle(12);
+        personaggio.getStyleClass().add("personaggio");
         for (int numero = GestorePartita.NUMERO_PIANI; numero >= 1; numero--) {
-            Label piano = new Label("Piano " + numero);
+            HBox piano = new HBox(8);
             piano.getStyleClass().add("piano");
+            piano.getChildren().add(new Label("Piano " + numero));
             torre.getChildren().add(piano);
         }
         aggiorna();
@@ -47,7 +52,12 @@ public class ControllerPartita {
     private void apriPorta(ActionEvent evento) {
         int indice = rigaPorte.getChildren().indexOf(evento.getSource());
         RisultatoEvento risultato = gestore.scegliPorta(indice);
-        messaggio.setText(risultato.messaggio());
+        String etichetta = switch (risultato.tipo()) {
+            case MOSTRO -> "[MOSTRO] ";
+            case FORZIERE -> "[SPADA] ";
+            case TRAPPOLA -> "[TRAPPOLA] ";
+        };
+        messaggio.setText(etichetta + risultato.messaggio());
         aggiorna();
     }
 
@@ -70,6 +80,10 @@ public class ControllerPartita {
             nodo.getStyleClass().remove("piano-attuale");
             if (GestorePartita.NUMERO_PIANI - i == pianoAttuale) {
                 nodo.getStyleClass().add("piano-attuale");
+                if (personaggio.getParent() != nodo) {
+                    ((HBox) nodo).getChildren().add(personaggio);
+
+                }
             }
         }
     }
